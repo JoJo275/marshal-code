@@ -16,4 +16,4 @@ Files containing linting rules for VSCode extensions.
 
 [comment]: # (make the first item formatting happen later)
 
-- **SQL**: [SQLTools by Matheus Teixeira](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools)
+- [sqlfluff by dorzey](https://marketplace.visualstudio.com/items?itemName=dorzey.vscode-sqlfluff)
