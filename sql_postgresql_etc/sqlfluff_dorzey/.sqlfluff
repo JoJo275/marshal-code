@@ -1,3 +1,5 @@
+# Strict SQLFluff configuration file for ANSI SQL dialect with specific formatting and best practices. Tried to enforce consistent style and readability with compatability across different SQL flavors.
+
 [sqlfluff]
 dialect = ansi
 max_line_length = 100
