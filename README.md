@@ -1,5 +1,5 @@
 # marshal-code
-Files containing linting rules for VSCode Extentions.
+Files containing linting rules for VSCode extensions.
 
 **How to Use:**
 1. Install Visual Studio Code.
@@ -7,6 +7,13 @@ Files containing linting rules for VSCode Extentions.
 3. Copy the corresponding extension file in whatever programming language you want.
 4. Paste the file into your VSCode workspace.
 
-## Languages Supported:
+## Languages Supported
 
-## VSCode Extensions Supported:
+- Python (Soon to be added)
+- SQL (SQL, SQLite, MySQL, PostgreSQL, etc...)
+
+## VSCode Extensions Supported
+
+[comment]: # (make the first item formatting happen later)
+
+- **SQL**: [SQLTools by Matheus Teixeira](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools)
