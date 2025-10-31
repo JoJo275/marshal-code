@@ -9,7 +9,6 @@ Files containing linting rules for VSCode extensions.
 
 ## Languages Supported
 
-- Python (Soon to be added)
 - SQL (SQL, SQLite, MySQL, PostgreSQL, etc...)
 
 ## VSCode Extensions Supported
