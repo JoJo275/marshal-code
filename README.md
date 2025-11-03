@@ -16,3 +16,4 @@ Files containing linting rules for VSCode extensions.
 [comment]: # (make the first item formatting happen later)
 
 - [sqlfluff by dorzey](https://marketplace.visualstudio.com/items?itemName=dorzey.vscode-sqlfluff)
+    - Some rules are misdefined in the .sqlfluff file, please refer to the [SQLFluff documentation](https://docs.sqlfluff.com/en/stable/rules.html) for more details on each rule. May provide updated rules in future releases.
