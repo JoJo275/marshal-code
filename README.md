@@ -1,5 +1,5 @@
 # marshal-code
-Files containing linting rules for VSCode extensions.
+Linting rules for VSCode extensions.
 
 **How to Use:**
 1. Install Visual Studio Code.
