@@ -1,5 +1,5 @@
 # marshal-code
-Files containing linting rules for VSCode extensions.
+Linting rules for VSCode extensions.
 
 **How to Use:**
 1. Install Visual Studio Code.
@@ -17,3 +17,7 @@ Files containing linting rules for VSCode extensions.
 
 - [sqlfluff by dorzey](https://marketplace.visualstudio.com/items?itemName=dorzey.vscode-sqlfluff)
     - Some rules are misdefined in the .sqlfluff file, please refer to the [SQLFluff documentation](https://docs.sqlfluff.com/en/stable/rules.html) for more details on each rule. May provide updated rules in future releases.
+
+## Schema
+
+**Repository layout with files containing linting rules.**
