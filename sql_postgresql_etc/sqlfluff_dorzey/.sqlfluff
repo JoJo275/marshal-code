@@ -1,281 +1,352 @@
-# Strict SQLFluff configuration file for ANSI SQL dialect with specific formatting and best practices. Tried to enforce consistent style and readability with compatability across different SQL flavors.
+# Strict SQLFluff configuration file for ANSI SQL dialect with specific formatting and best practices
+# Compatible with SQLFluff VSCode extension by dorzey
 
 [sqlfluff]
 dialect = ansi
 max_line_length = 100
-exclude_rules = 
+exclude_rules = L031
 templater = jinja
+# Comma separated list of file extensions to lint
+sql_file_exts = .sql,.sql.j2,.dml,.ddl
 
-[sqlfluff:layout:type]
-# Uppercase keywords (SELECT, FROM, WHERE, etc.)
-extended_capitalisation_policy = upper
+[sqlfluff:indentation]
+# L003 - Indentation rules
+indented_joins = false
+indented_ctes = false
+indented_using_on = true
+indent_unit = space
+tab_space_size = 2
 
-[sqlfluff:layout:identifier]
-# Lowercase identifiers (table names, column names)
-extended_capitalisation_policy = lower
-# Keep vendor-specific tokens/quotes as written
-unquoted_identifiers_policy = all
-quoted_identifiers_policy = none
+[sqlfluff:layout:type:comma]
+# L019 - Leading comma style
+line_position = leading
 
 [sqlfluff:rules:capitalisation.keywords]
+# L010 - Keyword capitalisation
 capitalisation_policy = upper
 
 [sqlfluff:rules:capitalisation.identifiers]
-capitalisation_policy = lower
-# Preserve quoted identifiers as-is
-ignore_words_regex = ^.*$
+# L014 - Unquoted identifier capitalisation
+extended_capitalisation_policy = lower
+unquoted_identifiers_policy = all
 
 [sqlfluff:rules:capitalisation.functions]
+# L030 - Function name capitalisation
+extended_capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.literals]
+# L040 - Boolean/null literal capitalisation
 capitalisation_policy = upper
 
-[sqlfluff:indentation]
-indent_unit = space
-indent_width = 2
-
-[sqlfluff:layout:type:comma]
-line_position = leading
+[sqlfluff:rules:capitalisation.types]
+# L063 - Datatype capitalisation
+extended_capitalisation_policy = upper
 
 [sqlfluff:rules:layout.long_lines]
+# L016 - Line length
 ignore_comment_lines = true
-# Wrap at 100 characters
-max_line_length = 100
+ignore_comment_clauses = true
 
 [sqlfluff:rules:layout.select_targets]
+# L036 - Select target styling
 wildcard_policy = multiple
 
-[sqlfluff:rules:structure.distinct]
-single_table_references = unqualified
+[sqlfluff:rules:layout.operators]
+# L007, L039 - Operator spacing
+operator_new_lines = after
 
-[sqlfluff:rules:layout.cte_bracket]
-# Preserve newlines around CTEs
-cte_bracket_style = separate_lines
+[sqlfluff:rules:aliasing.table]
+# L011 - Table aliasing
+aliasing = explicit
 
-[sqlfluff:rules:layout.select_modifiers]
-# One clause per line
+[sqlfluff:rules:aliasing.column]
+# L012 - Column aliasing
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.expression]
+# L013 - Expression aliasing
+allow_scalar = false
+
+[sqlfluff:rules:aliasing.length]
+# L059 - Alias length
+min_alias_length = 1
+max_alias_length = 30
+
+[sqlfluff:rules:aliasing.unique]
+# L060 - Unique aliases within query
 force_enable = true
 
+[sqlfluff:rules:ambiguous.column_references]
+# L027 - Qualified column references
+group_by_and_order_by_style = explicit
+
+[sqlfluff:rules:ambiguous.join]
+# L051 - Join clause positioning
+fully_qualify_join_types = both
+
+[sqlfluff:rules:ambiguous.set_columns]
+# L054 - Column matching in set operations
+force_enable = true
+
+[sqlfluff:rules:structure.subquery]
+# L042 - Subquery consistency
+forbid_subquery_in = both
+
+[sqlfluff:rules:structure.distinct]
+# L052 - Semi-joins instead of distinct/group by
+single_table_references = unqualified
+
+[sqlfluff:rules:convention.terminator]
+# L009 - Trailing spaces & L052 - Statement terminator
+multiline_newline = true
+require_final_semicolon = true
+
+[sqlfluff:rules:convention.select_trailing_comma]
+# L038 - Trailing comma in SELECT
+select_clause_trailing_comma = require
+
+[sqlfluff:rules:convention.count_rows]
+# L047 - COUNT(*) vs COUNT(1) vs COUNT(0)
+prefer_count_1 = false
+prefer_count_0 = false
+
+[sqlfluff:rules:convention.is_null]
+# L049 - Comparison with NULL
+force_enable = true
+
+[sqlfluff:rules:convention.coalesce]
+# L061 - COALESCE vs IFNULL/NVL
+force_enable = true
+
+[sqlfluff:rules:convention.casting]
+# L062 - CAST vs :: operator
+prefer_cast_function_style = true
+
+[sqlfluff:rules:convention.quoted_literals]
+# L064 - Consistent single quotes usage
+preferred_quoted_literal_style = single_quotes
+force_enable = true
+
+[sqlfluff:rules:convention.not_equal]
+# L065 - <> vs != 
+preferred_not_equal_style = ansi
+
+[sqlfluff:rules:convention.blocked_words]
+# L066 - Blocked words/functions
+blocked_words = 
+blocked_regex = 
+
+[sqlfluff:rules:convention.unnecessary_case]
+# L068 - Simplify CASE statements
+force_enable = true
+
+[sqlfluff:rules:references.from_clause_order]
+# L021 - Ambiguous use of DISTINCT
+force_enable = true
+
+[sqlfluff:rules:references.qualification]
+# L028 - Table references in multi-table queries
+single_table_references = unqualified
+
+[sqlfluff:rules:references.consistent]
+# L029 - Consistent table references
+single_table_references = consistent
+
 [sqlfluff:rules:references.special_chars]
-# Keep vendor tokens and special characters as written
+# L057 - Special characters in identifiers
 unquoted_identifiers_policy = all
 quoted_identifiers_policy = none
 allow_space_in_identifier = false
 
-[sqlfluff:rules:aliasing.table]
-aliasing = explicit
+[sqlfluff:rules:references.keywords]
+# L029 - Keywords as identifiers
+unquoted_identifiers_policy = all
+quoted_identifiers_policy = all
+ignore_words = id,name,type,status,level
 
-[sqlfluff:rules:aliasing.column]
-aliasing = explicit
-# Require AS keyword for column aliases
-aliasing_required = true
-
-[sqlfluff:rules:aliasing.expression]
-# Require AS for expression aliases
-allow_implicit_aliases = false
-
-[sqlfluff:rules:ambiguous.column_references]
-group_by_and_order_by_style = explicit
-
-[sqlfluff:rules:structure.subquery]
-forbid_subquery_in = both
-
-[sqlfluff:rules:layout.set_operators]
-# One clause per line for UNION, INTERSECT, etc.
-line_position = alone
-
-[sqlfluff:rules:layout.joins]
-# Preserve newlines around JOIN blocks
-allow_implicit = false
-
-[sqlfluff:rules:ambiguous.join]
-# Forbid implicit joins via comma, require explicit JOIN
-fully_qualify_join_types = both
-
-[sqlfluff:rules:structure.join_condition_order]
-# Enforce explicit JOIN syntax
-preferred_first_table_in_join_clause = earlier
-
-[sqlfluff:rules:ambiguous.select]
-# Forbid SELECT * wildcard in production
-wildcard_policy = none
-
-[sqlfluff:rules:layout.end_of_file]
-# Require semicolon at end of statements
-require_final_semicolon = true
-
-[sqlfluff:rules:convention.terminator]
-# Require semicolons to terminate statements
-multiline_newline = true
-require_final_semicolon = true
-
-[sqlfluff:rules:ambiguous.order_by]
-# Enforce deterministic ORDER BY when LIMIT is used
-require_order_by_when_limit = true
-
-# ==== Additional best practice rules (not in original) ====
-
-# Additional best practice rules
-
-[sqlfluff:rules:layout.operators]
-# Consistent spacing around operators
-operator_new_lines = after
-
-[sqlfluff:rules:structure.column_order]
-# Enforce consistent column ordering in SELECT
-leading_columns = id, name, created_at, updated_at
-
-[sqlfluff:rules:convention.count_rows]
-# Use COUNT(*) instead of COUNT(1) or COUNT(column)
-prefer_count_1 = false
-prefer_count_0 = false
-
-[sqlfluff:rules:convention.select_trailing_comma]
-# Enforce trailing commas in SELECT for easier diffs
-select_clause_trailing_comma = require
-
-[sqlfluff:rules:convention.left_join]
-# Prefer LEFT JOIN over RIGHT JOIN for readability
-prefer_left_join = true
-
-[sqlfluff:rules:convention.coalesce]
-# Use COALESCE instead of IFNULL/ISNULL for portability
-prefer_coalesce = true
-
-[sqlfluff:rules:convention.casting]
-# Use CAST over :: for ANSI compliance
-prefer_cast_function_style = true
-
-[sqlfluff:rules:structure.using]
-# Prefer ON over USING in joins for clarity
-prefer_using_in_join_criteria = false
-
-[sqlfluff:rules:references.from_clause]
-# Enforce table references in FROM clause
+[sqlfluff:rules:references.quoting]
+# L056 - Use quoted identifiers for reserved words
 force_enable = true
-
-[sqlfluff:rules:references.qualification]
-# Require table qualification for columns in multi-table queries
-single_table_references = unqualified
-multi_table_references = qualified
-
-[sqlfluff:rules:references.consistent]
-# Enforce consistent table references throughout query
-single_table_references = consistent
+ignore_words = id,name,type
+ignore_words_regex = ^.*_id$
 
 [sqlfluff:rules:layout.spacing]
-# Consistent spacing rules
-spacing_before = true
-spacing_after = true
-spacing_within = single
+# L001, L005, L006, L008 - General spacing rules
+force_enable = true
 
 [sqlfluff:rules:layout.functions]
-# No spaces between function name and parentheses
-no_space_after_function_name = true
+# L017 - Function spacing
+force_enable = true
 
-[sqlfluff:rules:convention.unnecessary_case]
-# Avoid unnecessary CASE statements
-forbid_case_with_single_when = true
+[sqlfluff:rules:layout.cte_bracket]
+# L018 - CTE bracket position
+force_enable = true
 
-[sqlfluff:rules:convention.not_equal]
-# Use <> instead of != for ANSI compliance
-prefer_ansi_not_equal_style = true
+[sqlfluff:rules:layout.select_modifiers]
+# L024 - Select modifiers
+force_enable = true
+
+[sqlfluff:rules:layout.set_operators]
+# L025 - Set operators
+line_position = alone
+
+[sqlfluff:rules:layout.end_of_file]
+# L009 - End of file
+force_enable = true
 
 [sqlfluff:rules:structure.else_null]
-# Require explicit ELSE NULL in CASE statements
-require_else = true
+# L035 - ELSE NULL in CASE
+force_enable = true
 
-[sqlfluff:rules:structure.grouping]
-# Enforce parentheses in complex boolean logic
-require_parentheses_in_conditions = true
-
-[sqlfluff:rules:convention.quoted_literals]
-# Use single quotes for string literals
-prefer_single_quotes = true
-
-[sqlfluff:rules:convention.null_ordering]
-# Explicit NULL ordering in ORDER BY
-require_explicit_nulls_ordering = true
+[sqlfluff:rules:structure.column_order]
+# L034 - Order of columns in SELECT
+force_enable = true
 
 [sqlfluff:rules:structure.unused_cte]
-# Flag unused CTEs
-forbid_unused_cte = true
-
-[sqlfluff:rules:structure.duplicate_cte]
-# Forbid duplicate CTE names
-forbid_duplicate_cte_names = true
-
-[sqlfluff:rules:convention.implicit_conversion]
-# Warn about implicit type conversions
-warn_on_implicit_conversion = true
-
-[sqlfluff:rules:convention.union]
-# Prefer UNION ALL over UNION when duplicates are acceptable
-prefer_union_all = true
+# L045 - Unused CTEs
+force_enable = true
 
 [sqlfluff:rules:structure.nested_case]
-# Limit nesting depth of CASE statements
+# L058 - Nested CASE statements
 max_nesting_depth = 3
 
-[sqlfluff:rules:references.keywords]
-# Don't use keywords as identifiers
-forbid_reserved_words_as_identifiers = true
+[sqlfluff:rules:structure.using]
+# L032 - USING vs ON in joins
+prefer_using_in_join_criteria = false
 
-[sqlfluff:rules:convention.date_literals]
-# Enforce ISO 8601 date format (YYYY-MM-DD)
-enforce_iso_date_format = true
+[sqlfluff:rules:ambiguous.union]
+# L020 - Leading whitespace
+force_enable = true
 
-[sqlfluff:rules:structure.subquery_nesting]
-# Limit subquery nesting depth
-max_subquery_depth = 2
+[sqlfluff:rules:layout.commas]
+# L019 - Comma placement consistency
+trailing_comma = forbid
+
+[sqlfluff:rules:ambiguous.distinct]
+# L021 - Ambiguous use of DISTINCT in select statement with GROUP BY
+force_enable = true
+
+[sqlfluff:rules:structure.groupby]
+# L022 - Blank line after CTE
+force_enable = true
+
+[sqlfluff:rules:layout.statements]
+# L023 - Single whitespace after AS in WITH clause
+force_enable = true
+
+[sqlfluff:rules:references.from_clause]
+# L026 - References cannot reference objects not present in FROM clause
+force_enable = true
+
+[sqlfluff:rules:references.wildcard]
+# L031 - Don't use table aliases in FROM clauses with wildcards
+force_enable = false
+
+[sqlfluff:rules:convention.left_join]
+# L033 - Prefer LEFT JOIN over RIGHT JOIN
+force_enable = true
+
+[sqlfluff:rules:ambiguous.order_by]
+# L037 - Ambiguous ordering direction
+force_enable = true
+
+[sqlfluff:rules:structure.else]
+# L035 - Omit ELSE NULL in CASE when appropriate
+force_enable = true
+
+[sqlfluff:rules:convention.comparison_operators]
+# L039 - Unnecessary whitespace
+force_enable = true
+
+[sqlfluff:rules:convention.null_order]
+# L041 - DISTINCT used with parentheses
+force_enable = true
+
+[sqlfluff:rules:layout.nested_joins]
+# L043 - Unnecessary CASE statement
+force_enable = true
+
+[sqlfluff:rules:ambiguous.column_count]
+# L044 - No table alias for single table
+force_enable = true
+
+[sqlfluff:rules:structure.join_condition]
+# L046 - Jinja tags should have a single whitespace
+force_enable = true
 
 [sqlfluff:rules:convention.between]
-# Prefer BETWEEN over >= AND <=
-prefer_between = true
+# L048 - Non-sequential CASE WHEN statements  
+force_enable = true
 
-[sqlfluff:rules:convention.exists]
-# Prefer EXISTS over IN for subqueries
-prefer_exists_over_in = true
+[sqlfluff:rules:layout.window_functions]
+# L050 - Files must not begin with newlines or whitespace
+force_enable = true
 
-[sqlfluff:rules:structure.having]
-# Only use HAVING for aggregate conditions
-restrict_having_to_aggregates = true
+[sqlfluff:rules:structure.recursive_cte]
+# L053 - Top-level statements should not be wrapped in brackets
+force_enable = true
 
-[sqlfluff:rules:convention.window_functions]
-# Named window definitions for complex queries
-prefer_window_clause = true
+[sqlfluff:rules:ambiguous.aggregate]
+# L055 - Use of nullable column in aggregate without COALESCE
+force_enable = true
 
-[sqlfluff:rules:layout.blank_lines]
-# Blank lines between major query sections
-blank_line_after_cte = true
-blank_line_between_queries = true
+[sqlfluff:rules:convention.spaces]
+# L067 - Unparsable file check
+force_enable = true
 
-[sqlfluff:rules:convention.boolean]
-# Use TRUE/FALSE instead of 1/0 for booleans
-prefer_boolean_literals = true
+[sqlfluff:rules:structure.constraints]
+# L069 - Pivot table without alias
+force_enable = true
 
-[sqlfluff:rules:structure.distinct_on]
-# Warn about DISTINCT without explicit columns
-require_distinct_columns = true
+[sqlfluff:rules:convention.position]
+# L070 - Mixed datatypes in PIVOT
+force_enable = true
 
-[sqlfluff:rules:convention.numeric_literals]
-# No leading zeros in numeric literals
-forbid_leading_zeros = true
+[sqlfluff:rules:layout.cte]
+# L071 - Parentheses for CTE definition 
+force_enable = true
 
-[sqlfluff:rules:structure.foreign_key]
-# Enforce foreign key naming conventions
-foreign_key_pattern = fk_.*
+[sqlfluff:rules:structure.limit]
+# Additional structure rules
+force_enable = true
 
-[sqlfluff:rules:structure.primary_key]
-# Enforce primary key naming conventions
-primary_key_pattern = pk_.*
+[sqlfluff:rules:jinja]
+# Jinja templating
+apply_dbt_builtins = true
 
-[sqlfluff:rules:structure.index]
-# Enforce index naming conventions
-index_pattern = idx_.*
+[sqlfluff:templater:jinja]
+# Jinja context for templating
+apply_dbt_builtins = true
 
-[sqlfluff:rules:convention.table_naming]
-# Enforce table naming conventions (lowercase, underscore)
-table_pattern = [a-z][a-z0-9_]*
+[sqlfluff:templater:jinja:context]
+# Context variables for Jinja templates (if needed)
+# my_var = value
 
-[sqlfluff:rules:convention.column_naming]
-# Enforce column naming conventions (lowercase, underscore)
-column_pattern = [a-z][a-z0-9_]*
+# Additional templater configurations for dbt if needed
+[sqlfluff:templater:dbt]
+# dbt project configuration
+project_dir = .
+profiles_dir = ~/.dbt
+profile = default
+target = dev
+
+# Exclusions for specific paths or patterns
+[sqlfluff:exclusions]
+# Rules to exclude for specific SQL dialects or file patterns
+rules = 
+  tmp/* = L009,L016
+  staging/* = L042
+  
+# Inline ignoring configuration
+[sqlfluff:inline_ignores]
+# Configure inline ignore behavior
+force_enable = true
+
+# Additional layout configurations
+[sqlfluff:layout]
+# General layout settings
+type = 
+  statement = 
+    line_position = leading
+  expression = 
+    line_position = trailing
